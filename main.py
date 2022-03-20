@@ -45,7 +45,29 @@ while still_playing:
     ball.move()
 
     # Detect collision with wall
-    if ball.ycor() > 250 or ball.ycor() < -250:
-        ball.bounce_down()
+    if ball.ycor() > 275 or ball.ycor() < -275:
+        ball.bounce_y()
+
+    # Detect collision with paddles
+    if ball.distance(paddle_R) < 50 and ball.xcor() > 320 or ball.distance(paddle_L) < 50 and ball.xcor() < -320:
+        ball.bounce_x()
+
+    # Detect pass wall to score
+    if ball.xcor() > 500:
+        score_L.add_score()
+        ball.goto(0, 0)
+        ball.bounce_x()
+    elif ball.xcor() < -500:
+        score_R.add_score()
+        ball.goto(0, 0)
+        ball.bounce_x()
+
+    # Determine Winner
+    if score_L.scored == 10:
+        score_L.end_game("left")
+        still_playing = False
+    elif score_R.scored == 10:
+        score_R.end_game("right")
+        still_playing = False
 
 screen.exitonclick()
